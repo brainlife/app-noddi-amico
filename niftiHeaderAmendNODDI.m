@@ -1,5 +1,14 @@
 function niftiHeaderAmendNODDI()
 
+switch getenv('ENV')
+case 'IUHPC'
+  disp('loading paths (HPC)')
+  addpath(genpath('/N/u/hayashis/BigRed2/git/vistasoft'))
+case 'VM'
+  disp('loading paths (VM)')
+  addpath(genpath('/usr/local/vistasoft'))
+end
+
 icvf = niftiRead(fullfile(pwd,'NODDI','AMICO','NODDI','FIT_ICVF.nii.gz'));
 od = niftiRead(fullfile(pwd,'NODDI','AMICO','NODDI','FIT_OD.nii.gz'));
 isovf = niftiRead(fullfile(pwd,'NODDI','AMICO','NODDI','FIT_ISOVF.nii.gz'));
