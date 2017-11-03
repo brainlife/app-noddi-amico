@@ -28,7 +28,7 @@ mkdir $noddiFile;
 if [ -f "nodif_brain.nii.gz" ]; then
 	echo "File exists. Skipping b0 brainmask creation"
 else
-	echo "Create b0 brainnmask from ACPC aligned dwi for NODDI"
+	echo "Create b0 brainnmask from T1 aligned dwi for NODDI"
 	## Create b0 brainmask for NODDI
 	select_dwi_vols \
 		${dwi} \
