@@ -1,0 +1,104 @@
+#!/bin/bash
+
+## modules
+module load fsl/5.0.9
+module load java
+module load camino
+module unload python
+module load matlab/2017a
+module load spm/8
+module load anaconda2
+
+source activate noddi
+
+echo "Setting file paths"
+# Grab the config.json inputs
+dwi=`./jq -r '.dwi' config.json`;
+bvals=`./jq -r '.bvals' config.json`;
+bvecs=`./jq -r '.bvecs' config.json`;
+t1=`./jq -r '.t1' config.json`;
+echo "Files loaded"
+
+if [ -f "nodif_brain.nii.gz" ]; then
+	echo "File exists. Skipping b0 brainmask creation"
+else
+	echo "Create b0 brainnmask from ACPC aligned dwi for NODDI"
+	## Create b0 brainmask for NODDI
+	select_dwi_vols \
+		${dwi} \
+		${bvals} \
+		nodif.nii.gz \
+		0;
+
+	# Brain extraction before NODDI
+	bet nodif.nii.gz \
+		nodif_brain \
+		-f 0.4 \
+		-g 0 \
+		-m;
+
+	ret=$?
+	if [ ! $ret -eq 0 ]; then
+		echo "b0 brainmask creation failed"
+		echo $ret > finished
+		exit $ret
+	fi
+fi
+echo "b0 brainmask creation complete."
+
+
+if [ -f "bvals.scheme" ]; then
+	echo "File exists.  Skipping Camino Scheme File creation"
+else
+	echo "Create Camino Scheme File"
+	## Create Camino scheme file
+	fsl2scheme \
+		-bvecfile ${bvecs} \
+		-bvalfile ${bvals} \
+		-bscale 1 \
+		> bvals.scheme;
+	
+	ret=$?
+	if [ ! $ret -eq 0 ]; then
+		echo "Scheme file creation failed"
+		echo $ret > finished
+		exit $ret
+	fi
+fi
+echo "Camino scheme file creation complete."
+
+
+if [ -f "./AMICO/NODDI/FIT_ICVF.nii.gz" ]; then
+	echo "File exists. Skipping NODDI model fitting via AMICO"
+else
+	echo "Fitting NODDI"
+	## Run NODDI
+	NODDI.py;
+	
+	ret=$?
+	if [ ! $ret -eq 0 ]; then
+		echo "NODDI model fitting failed"
+		echo $ret > finished
+		exit $ret
+	fi
+fi
+echo "NODDI complete"
+
+
+echo "Ammend header of NODDI image"
+if [ -f "./AMICO/NODDI/FIT_ICVF_NEW.nii.gz" ]; then
+	echo "Header ammended already. Skipping"
+else
+	## Ammend header of NODDI images
+	matlab -nodisplay -nosplash -r "niftiHeaderAmendNODDI()";
+
+	ret=$?
+	if [ ! $ret -eq 0 ]; then
+		echo "Registration failed"
+		echo $ret > finished
+		exit $ret
+	fi
+fi
+echo "Ammending complete"
+
+echo "NODDI Pipeline Complete"
