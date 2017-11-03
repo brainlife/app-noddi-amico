@@ -9,7 +9,7 @@ def NODDI():
 	cwd = os.getcwd()
 	amico.core.setup()
 	ae = amico.Evaluation(cwd,"NODDI")
-	ae.load_data(dwi_filename = "data_acpc.nii.gz", scheme_filename = "bvals.scheme", mask_filename = "nodif_acpc_brain_mask.nii.gz", b0_thr = 1)
+	ae.load_data(dwi_filename = "dwi.nii.gz", scheme_filename = "bvals.scheme", mask_filename = "nodif_brain_mask.nii.gz", b0_thr = 1)
 	ae.set_model("NODDI")
 	ae.generate_kernels( regenerate = True )
 	ae.load_kernels()
