@@ -1,4 +1,6 @@
 #!/bin/bash
+#PBS -k o
+#PBS -l nodes=1:ppn=16,walltime=2:00:00
 
 ## modules
 module load fsl/5.0.9
@@ -18,6 +20,10 @@ bvals=`./jq -r '.bvals' config.json`;
 bvecs=`./jq -r '.bvecs' config.json`;
 t1=`./jq -r '.t1' config.json`;
 echo "Files loaded"
+
+noddiImages="FIT_ICVF_NEW.nii.gz FIT_ISOVF_NEW.nii.gz FIT_OD_NEW.nii.gz FIT_dir.nii.gz config.pickle";
+noddiFile="NODDI";
+mkdir $noddiFile;
 
 if [ -f "nodif_brain.nii.gz" ]; then
 	echo "File exists. Skipping b0 brainmask creation"
@@ -67,8 +73,11 @@ else
 fi
 echo "Camino scheme file creation complete."
 
+cp -v bvals.scheme ./$noddiFile/;
+cp -v ${dwi} ./$noddiFile/;
+cp -v nodif_brain_mask.nii.gz ./$noddiFile/;
 
-if [ -f "./AMICO/NODDI/FIT_ICVF.nii.gz" ]; then
+if [ -f "./$noddiFile/AMICO/NODDI/FIT_ICVF.nii.gz" ]; then
 	echo "File exists. Skipping NODDI model fitting via AMICO"
 else
 	echo "Fitting NODDI"
@@ -85,8 +94,8 @@ fi
 echo "NODDI complete"
 
 
-echo "Ammend header of NODDI image"
-if [ -f "./AMICO/NODDI/FIT_ICVF_NEW.nii.gz" ]; then
+echo "Amend header of NODDI image"
+if [ -f "./$noddiFile/AMICO/NODDI/FIT_ICVF_NEW.nii.gz" ]; then
 	echo "Header ammended already. Skipping"
 else
 	## Ammend header of NODDI images
@@ -100,5 +109,14 @@ else
 	fi
 fi
 echo "Ammending complete"
+
+for NODDIIMAGES in $noddiImages
+	do
+		mv ./$noddiFile/AMICO/NODDI/${NODDIIMAGES} ./
+	done
+
+rm -rf ./$noddiFile;
+rm -rf *nodif*;
+rm -rf ./kernels;
 
 echo "NODDI Pipeline Complete"
