@@ -1,4 +1,4 @@
-function niftiHeaderAmendNODDI()
+function out = main()
 
 switch getenv('ENV')
 case 'IUHPC'
