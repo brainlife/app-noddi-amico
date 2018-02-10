@@ -16,3 +16,6 @@ RUN git clone https://github.com/daducci/AMICO.git && cd AMICO && pip install .
 
 #make it work under singularity
 RUN ldconfig && mkdir -p /N/u /N/home /N/dc2 /N/soft
+
+#https://wiki.ubuntu.com/DashAsBinSh
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
