@@ -2,8 +2,13 @@
 
 module load singularity 2> /dev/null
 
+# alignment
+singularity exec -e docker://brainlife/fsl:5.0.9 ./alignment.sh
+
+# reslice
+singularity exec -e docker://brainlife/amico:1.0 ./reslice_fxn.py
+
 # create brainmask
-#singularity exec -e docker://brainlife/vistasoftregistration ./brainmask.sh
 singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
 
 if [ ! -s nodif.nii.gz ];
@@ -11,6 +16,27 @@ then
 	echo "output missing"
 	exit 1
 fi
+
+# rotate bvecs
+singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./rotation/rotateBvecs
+
+# create scheme file
+num="1 2 3";
+
+bvals=`jq -r '.bvals' config.json`;
+bvecs=`jq -r '.bvecs' config.json`;
+
+for NUM in $num
+	do
+		sed -n "${NUM}p" ${bvecs} > row_${NUM}.txt
+		fmt -1 row_${NUM}.txt > col_${NUM}.txt
+		fmt -1 ${bvals} > col_bvals.txt
+	done
+pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
+rm -rf *col* *row*;
+cp -v nodif_brain_mask.nii.gz ./NODDI/;
+cp -v bvals.scheme ./NODDI/;
+cp -v dwi.nii.gz ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
 singularity exec -e docker://brainlife/amico:1.0 ./NODDI.py
