@@ -18,41 +18,39 @@ echo "Files loaded"
 ## Align multishell dwi to acpc-aligned single shell dwi from dtiinit
 echo "Aligning multishell dwi to acpc-space"
 mkdir alignment;
-cd ./alignment;
 
 # Create b0 from dtiinit
 select_dwi_vols \
 	${dtiinitDwi} \
 	${dtiinitBvals} \
-	nodif_init.nii.gz \
+	./alignment/nodif_init.nii.gz \
 	0;
 
 # Create b0 from multi-shell dwi
 select_dwi_vols \
 	${dwi} \
 	${bvals} \
-	nodif_multi.nii.gz \
+	./alignment/nodif_multi.nii.gz \
 	0;
 
 # Obtain transformation matrix from nodif_init to nodif_multi
 flirt \
-	-in nodif_multi.nii.gz \
-	-ref nodif_init.nii.gz \
-	-out nodif_aligned.nii.gz \
-	-omat acpcxform.mat;
+	-in ./alignment/nodif_multi.nii.gz \
+	-ref ./alignment/nodif_init.nii.gz \
+	-out ./alignment/nodif_aligned.nii.gz \
+	-omat ./alignment/acpcxform.mat;
 
 # Align multi-shell dwi to nodif_multi
 flirt \
 	-in ${dwi} \
-	-ref nodif_aligned.nii.gz \
-	-out dwi.nii.gz \
-	-init acpcxform.mat \
+	-ref ./alignment/nodif_aligned.nii.gz \
+	-out ./alignment/dwi.nii.gz \
+	-init ./alignment/acpcxform.mat \
 	-applyxfm;
 
 # Clean up and change directory
-mv dwi.nii.gz ../;
-mv acpcxform.mat ../;
-cd ..;
+mv ./alignment/dwi.nii.gz ./;
+mv ./alignment/acpcxform.mat ./;
 rm -rf ./alignment;
 
 echo "alignment complete"
