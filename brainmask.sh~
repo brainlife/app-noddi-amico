@@ -6,8 +6,8 @@ dwi=`jq -r '.dwi' config.json`;
 bvals=`jq -r '.bvals' config.json`;
 bvecs=`jq -r '.bvecs' config.json`;
 dtiinit=`jq -r '.dtiinit' config.json`;
-dtiinitDwi=${dtiinit}/dwi_aligned_trilin_noMEC.nii.gz;
-dtiinitBvals=${dtiinit}/dwi_aligned_trilin_noMEC.bvals;
+dtiinitDwi="${dtiinit}/dwi_aligned_trilin_noMEC.nii.gz";
+dtiinitBvals="${dtiinit}/dwi_aligned_trilin_noMEC.bvals";
 echo "Files loaded"
 
 # Create b0
