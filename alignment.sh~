@@ -10,8 +10,9 @@ echo "Setting file paths"
 dwi=`jq -r '.dwi' config.json`;
 bvals=`jq -r '.bvals' config.json`;
 bvecs=`jq -r '.bvecs' config.json`;
-dtiinitDwi=`jq -r '.dtiinitDwi' config.json`;
-dtiinitBvals=`jq -r '.dtiinitBvals' config.json`;
+dtiinit=`jq -r '.dtiinit' config.json`;
+dtiinitDwi=${dtiinit}/dwi_aligned_trilin_noMEC.nii.gz;
+dtiinitBvals=${dtiinit}/dwi_aligned_trilin_noMEC.bvals;
 echo "Files loaded"
 
 ## Align multishell dwi to acpc-aligned single shell dwi from dtiinit
