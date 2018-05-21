@@ -1,1 +1,3 @@
 # app-NODDI_AMICO
+
+This app will fit the Neurite Orientation Dispersion and Density Imaging (NODDI; Zhang et al, 2012) model to multi-shell, normalized DWI data using the Accelerated Microstructure Imaging via Convex Optimization (AMICO; Daducci et al, 2015) toolbox. Requires normalized, multi-shell DWI data (including bvals and bvecs), and the single shell dwi file that has been aligned to the subject's T1 (i.e. dtiinit output) as input. The app will align the multi-shell data to the single-shell data in order to assure that NODDI outputs are in the same space as the tensor outputs for later analyses. Will output the five NODDI output files: FIT_ICVF_NEW, FIT_OD_NEW, FIT_ISOVF_NEW, FIT_dir, and config.pickle.
