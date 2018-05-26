@@ -39,6 +39,7 @@ cp -v bvals.scheme ./NODDI/;
 cp -v dwi.nii.gz ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
+dPar = `jq -r '.dpar' config.json`
 singularity exec -e docker://brainlife/amico:1.0 ./NODDI.py
 
 if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
@@ -61,6 +62,8 @@ for NODDIIMAGES in $noddiImages
 rm -rf ./NODDI;
 rm -rf *nodif*;
 rm -rf ./kernels;
+
+echo "{\"tags\": [\"${dPar}\" ]}" > product.json
 
 echo "NODDI AMICO complete"
 
