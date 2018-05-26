@@ -5,8 +5,13 @@ import os
 import sys
 
 def NODDI():
+<<<<<<< HEAD
+	import json
+	import amico
+=======
 	import amico
 	import json
+>>>>>>> 302cdf82cb729176f5d5a2f5cf69f65b48828cc6
 	with open('config.json') as config_json:
 		config = json.load(config_json)
 		dPar = float(config['dPar'])
