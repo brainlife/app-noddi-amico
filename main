@@ -7,7 +7,6 @@ singularity exec -e docker://brainlife/fsl:5.0.9 ./alignment.sh
 
 # reslice
 echo "reslicing function beginning"
-ls
 singularity exec -e docker://brainlife/amico:1.0 "cd $PBS_O_WORKDIR && ./reslice_fxn.py"
 
 # create brainmask
