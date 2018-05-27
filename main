@@ -60,7 +60,7 @@ rm -rf ./NODDI;
 rm -rf *nodif*;
 rm -rf ./kernels;
 
-echo "{\"tags\": [\"${dPar}\" ]}" > product.json
+echo "{\"tags\": [\"$dPar\" ]}" > product.json
 
 echo "NODDI AMICO complete"
 
