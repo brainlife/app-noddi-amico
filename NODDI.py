@@ -9,9 +9,11 @@ def NODDI():
 	import amico
 	import amico
 	import json
+	
 	with open('config.json') as config_json:
 		config = json.load(config_json)
 		dPar = float(config['dPar'])
+	
 	cwd = os.getcwd()
 	amico.core.setup()
 	ae = amico.Evaluation(cwd,"NODDI")
