@@ -36,7 +36,7 @@ cp -v bvals.scheme ./NODDI/;
 cp -v dwi.nii.gz ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
-dPar = `jq -r '.dpar' config.json`
+dPar = `jq -r '.dPar' config.json`
 singularity exec -e docker://brainlife/amico:1.0 ./NODDI.py
 
 if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
