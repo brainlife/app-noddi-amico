@@ -1,4 +1,5 @@
-[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.1-blue.svg)](https://doi.org/10.25663/bl.app.1)
+[![Abcdspec-compliant](https://img.shields.io/badge/ABCD_Spec-v1.1-green.svg)](https://github.com/soichih/abcd-spec)
+[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.35-blue.svg)](https://doi.org/10.25663/bl.app.35)
 
 # app-noddi-amico
 This app will fit the Neurite Orientation Dispersion and Density Imaging (NODDI; Zhang et al, 2012) model to multi-shell, normalized DWI data using the Accelerated Microstructure Imaging via Convex Optimization (AMICO; Daducci et al, 2015) toolbox. First, the multi-shell data to the single-shell data will be registered with the dtiinit T1-aligned DWI image in order to assure that NODDI outputs are in the same space as the tensor outputs for later analyses using FSL's flirt by running the alignment script. Next, a brainmask of the aligned dwi will be made using FSL's bet function by running the brainmask script. Then, the bvecs will be rotated based on the transformation by using Vistasoft's dtiRawReorientBvecs function by running the rotateBvecs script. Finally, the NODDI model will be fit using AMICO toolbox by running the NODDI script. 
