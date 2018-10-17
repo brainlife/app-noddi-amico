@@ -14,9 +14,6 @@ then
 	exit 1
 fi
 
-# rotate bvecs
-singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./rotation/rotateBvecs
-
 # create scheme file
 num="1 2 3";
 
