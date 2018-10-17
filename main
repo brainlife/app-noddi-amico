@@ -30,7 +30,7 @@ pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
 rm -rf *col* *row*;
 cp -v nodif_brain_mask.nii.gz ./NODDI/;
 cp -v bvals.scheme ./NODDI/;
-cp -v dwi.nii.gz ./NODDI/dwi.nii.gz;
+cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
 dPar=`jq -r '.dPar' config.json`
