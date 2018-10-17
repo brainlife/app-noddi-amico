@@ -9,7 +9,7 @@ echo "Files loaded"
 
 # Create b0
 select_dwi_vols \
-	dwi.nii.gz \
+	${dwi} \
 	${bvals} \
 	nodif.nii.gz \
 	0;
