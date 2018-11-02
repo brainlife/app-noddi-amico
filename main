@@ -5,6 +5,8 @@
 
 module load singularity 2> /dev/null
 
+mkdir ./NODDI;
+
 # create brainmask
 singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
 
