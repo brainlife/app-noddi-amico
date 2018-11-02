@@ -29,6 +29,7 @@ for NUM in $num
 pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
 rm -rf *col* *row*;
 cp -v nodif_brain_mask.nii.gz ./NODDI/;
+mv nodif_brain_mask.nii.gz mask.nii.gz;
 cp -v bvals.scheme ./NODDI/;
 cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
@@ -46,12 +47,17 @@ fi
 singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
 
 # clean up
-noddiImages="FIT_ICVF_NEW.nii.gz FIT_ISOVF_NEW.nii.gz FIT_OD_NEW.nii.gz FIT_dir.nii.gz config.pickle";
+noddiImages="FIT_ICVF_NEW.nii.gz FIT_ISOVF_NEW.nii.gz FIT_OD_NEW.nii.gz FIT_dir.nii.gz";
 
 for NODDIIMAGES in $noddiImages
 	do
 		mv ./NODDI/AMICO/NODDI/${NODDIIMAGES} ./
 	done
+
+mv FIT_ICVF_NEW.nii.gz icvf.nii.gz;
+mv FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
+mv FIT_OD_NEW.nii.gz od.nii.gz;
+mv FIT_dir.nii.gz dir.nii.gz;
 
 rm -rf ./NODDI;
 rm -rf *nodif*;
