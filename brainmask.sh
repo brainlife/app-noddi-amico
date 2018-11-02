@@ -5,6 +5,9 @@ echo "Setting file paths"
 dwi=`jq -r '.dwi' config.json`;
 bvals=`jq -r '.bvals' config.json`;
 bvecs=`jq -r '.bvecs' config.json`;
+noddiFile="NODDI";
+mkdir $noddiFile;
+
 echo "Files loaded"
 
 # Create b0

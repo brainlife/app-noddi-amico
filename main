@@ -5,7 +5,7 @@
 
 module load singularity 2> /dev/null
 
-mkdir ./NODDI;
+dwi=`jq -r '.dwi' config.json`;
 
 # create brainmask
 singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
@@ -29,48 +29,48 @@ for NUM in $num
 		fmt -1 ${bvals} > col_bvals.txt
 	done
 pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
-rm -rf *col* *row*;
-cp -v nodif_brain_mask.nii.gz ./NODDI/;
-mv nodif_brain_mask.nii.gz mask.nii.gz;
-cp -v bvals.scheme ./NODDI/;
-cp -v ${dwi} ./NODDI/dwi.nii.gz;
+# rm -rf *col* *row*;
+# cp -v nodif_brain_mask.nii.gz ./NODDI/;
+# mv nodif_brain_mask.nii.gz mask.nii.gz;
+# cp -v bvals.scheme ./NODDI/;
+# cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
-# NODDI via AMICO
-dPar=`jq -r '.dPar' config.json`
-singularity exec -e docker://brainlife/amico:1.0 ./NODDI.py
+# # NODDI via AMICO
+# dPar=`jq -r '.dPar' config.json`
+# singularity exec -e docker://brainlife/amico:1.0 ./NODDI.py
 
-if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
-then
-	echo "output missing"
-	exit 1
-fi
+# if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
+# then
+# 	echo "output missing"
+# 	exit 1
+# fi
 
-# registration
-singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
+# # registration
+# singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
 
-# clean up
-noddiImages="FIT_ICVF_NEW.nii.gz FIT_ISOVF_NEW.nii.gz FIT_OD_NEW.nii.gz FIT_dir.nii.gz";
+# # clean up
+# noddiImages="FIT_ICVF_NEW.nii.gz FIT_ISOVF_NEW.nii.gz FIT_OD_NEW.nii.gz FIT_dir.nii.gz";
 
-for NODDIIMAGES in $noddiImages
-	do
-		mv ./NODDI/AMICO/NODDI/${NODDIIMAGES} ./
-	done
+# for NODDIIMAGES in $noddiImages
+# 	do
+# 		mv ./NODDI/AMICO/NODDI/${NODDIIMAGES} ./
+# 	done
 
-mv FIT_ICVF_NEW.nii.gz icvf.nii.gz;
-mv FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
-mv FIT_OD_NEW.nii.gz od.nii.gz;
-mv FIT_dir.nii.gz dir.nii.gz;
+# mv FIT_ICVF_NEW.nii.gz icvf.nii.gz;
+# mv FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
+# mv FIT_OD_NEW.nii.gz od.nii.gz;
+# mv FIT_dir.nii.gz dir.nii.gz;
 
-rm -rf ./NODDI;
-rm -rf *nodif*;
-rm -rf ./kernels;
+# rm -rf ./NODDI;
+# rm -rf *nodif*;
+# rm -rf ./kernels;
 
-echo "{\"tags\": [\"${dPar}\" ]}" > product.json
+# echo "{\"tags\": [\"${dPar}\" ]}" > product.json
 
-echo "NODDI AMICO complete"
+# echo "NODDI AMICO complete"
 
-if [ ! -s FIT_ICVF_NEW.nii.gz ];
-then
-	echo "output missing"
-	exit 1
-fi
+# if [ ! -s FIT_ICVF_NEW.nii.gz ];
+# then
+# 	echo "output missing"
+# 	exit 1
+# fi
