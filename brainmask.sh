@@ -19,7 +19,7 @@ select_dwi_vols \
 
 # Brain extraction before alignment
 bet nodif.nii.gz \
-	mask \
+	nodif_brain \
 	-f 0.4 \
 	-g 0 \
 	-m;
