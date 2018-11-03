@@ -69,7 +69,7 @@ echo "{\"tags\": [\"${dPar}\" ]}" > product.json
 
 echo "NODDI AMICO complete"
 
-if [ ! -s FIT_ICVF_NEW.nii.gz ];
+if [ ! -s icvf.nii.gz ];
 then
 	echo "output missing"
 	exit 1
