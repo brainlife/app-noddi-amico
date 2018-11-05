@@ -9,13 +9,12 @@ dwi=`jq -r '.dwi' config.json`;
 otherMask=`jq -r '.mask' config.json`;
 advancedMask=`jq -r '.advancedMask' config.json`;
 
-if [ $otherMask=="null" ] && [ $advancedMask=="false" ]; then
+if [ $otherMask == "null" ] && [ $advancedMask == "False" ]; then
 	# create brainmask
 	singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
-elif [ $otherMask != "null" ] && [ $advanceMask=="true" ];
-	# create brainmask
+elif [ $otherMask != "null" ] && [ $advancedMask == "True" ]; then
 	singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
-else
+elif [ $otherMask != "null" ] && [ $advancedMask == "False" ]; then
 	export otherMaskNifti=$otherMask;
 	cp -v $otherMaskNifti ./nodif_brain_mask.nii.gz;
 fi
