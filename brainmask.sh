@@ -5,6 +5,8 @@ echo "Setting file paths"
 dwi=`jq -r '.dwi' config.json`;
 bvals=`jq -r '.bvals' config.json`;
 bvecs=`jq -r '.bvecs' config.json`;
+doadvance=`jq -r '.advancedMask' config.json`;
+otherMask=`jq -r '.mask' config.json`;
 noddiFile="NODDI";
 mkdir $noddiFile;
 
@@ -23,6 +25,10 @@ bet nodif.nii.gz \
 	-f 0.4 \
 	-g 0 \
 	-m;
+
+if [ $doadvance == True ]; then
+	fslmaths $otherMask -mul nodif_brain_mask.nii.gz nodif_brain_mask.nii.gz
+fi
 
 echo "brainmask creation complete"
 
