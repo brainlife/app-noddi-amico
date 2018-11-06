@@ -17,6 +17,7 @@ elif [ $otherMask != "null" ] && [ $advancedMask == true ]; then
 elif [ $otherMask != "null" ] && [ $advancedMask == false ]; then
 	export otherMaskNifti=$otherMask;
 	cp -v $otherMaskNifti ./nodif_brain_mask.nii.gz;
+	mkdir NODDI;
 fi
 
 if [ ! -s nodif_brain_mask.nii.gz ];
