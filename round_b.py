@@ -11,6 +11,6 @@ bval_file.close()
 
 def round_b(b):
    return str(int(round(float(b)/100)*100))
-o = open("dwi.bvals", "w")
+o = open("./NODDI/dwi.bvals", "w")
 o.write(" ".join(map(round_b, bvals)))
 o.close()

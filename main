@@ -28,22 +28,22 @@ then
 fi
 
 # create scheme file
-num="1 2 3";
+#num="1 2 3";
 
-bvals=dwi.bvals
-bvecs=`jq -r '.bvecs' config.json`;
+#bvals=dwi.bvals
+#bvecs=`jq -r '.bvecs' config.json`;
 
-for NUM in $num
-	do
-		sed -n "${NUM}p" ${bvecs} > row_${NUM}.txt
-		fmt -1 row_${NUM}.txt > col_${NUM}.txt
-		fmt -1 ${bvals} > col_bvals.txt
-	done
-pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
-rm -rf *col* *row*;
+#for NUM in $num
+#	do
+#		sed -n "${NUM}p" ${bvecs} > row_${NUM}.txt
+#		fmt -1 row_${NUM}.txt > col_${NUM}.txt
+#		fmt -1 ${bvals} > col_bvals.txt
+#	done
+#pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
+#rm -rf *col* *row*;
 cp -v nodif_brain_mask.nii.gz ./NODDI/;
 mv nodif_brain_mask.nii.gz mask.nii.gz;
-cp -v bvals.scheme ./NODDI/;
+#cp -v bvals.scheme ./NODDI/;
 cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
