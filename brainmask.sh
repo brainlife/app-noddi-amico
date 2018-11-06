@@ -29,7 +29,7 @@ bet nodif.nii.gz \
 	-g 0 \
 	-m;
 
-if [ $doadvance == True ]; then
+if [ $doadvance == true ]; then
 	fslmaths $otherMask -mul nodif_brain_mask.nii.gz nodif_brain_mask.nii.gz
 fi
 
