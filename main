@@ -26,7 +26,7 @@ then
 	exit 1
 fi
 
-singularity exec -e docker://brainlife/amico:1.0 ./round_b.py
+singularity exec -e docker://brainlife/amico:1.1 ./round_b.py
 
 # create scheme file
 #num="1 2 3";
@@ -49,7 +49,7 @@ cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
 dPar=`jq -r '.dPar' config.json`
-singularity exec -e docker://brainlife/amico:1.0 ./NODDI.py
+singularity exec -e docker://brainlife/amico:1.1 ./NODDI.py
 
 if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
 then
