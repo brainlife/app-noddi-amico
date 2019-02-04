@@ -49,7 +49,7 @@ cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
 dPar=`jq -r '.dPar' config.json`
-singularity exec -e docker://brainlife/amico:1.1 ./NODDI.py
+SINGULARITYENV_PYTHONNOUSERSITE=true singularity exec -e docker://brainlife/amico:1.1 ./NODDI.py
 
 if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
 then
