@@ -12,7 +12,7 @@ end
 icvf = niftiRead(fullfile(pwd,'NODDI','AMICO','NODDI','FIT_ICVF.nii.gz'));
 od = niftiRead(fullfile(pwd,'NODDI','AMICO','NODDI','FIT_OD.nii.gz'));
 isovf = niftiRead(fullfile(pwd,'NODDI','AMICO','NODDI','FIT_ISOVF.nii.gz'));
-b0 = niftiRead(fullfile('nodif_brain.nii.gz'));
+b0 = niftiRead(fullfile('mask.nii.gz'));
 n_fields_icvf = fieldnames( icvf );
 n_fields_od = fieldnames( od );
 n_fields_isovf = fieldnames (isovf);
