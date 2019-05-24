@@ -14,13 +14,16 @@ def NODDI():
 		config = json.load(config_json)
 		dPar = float(config['dPar'])
                 bvecs = config['bvecs']
+		debias = config['debias']
 
 	cwd = os.getcwd()
 	amico.core.setup()
 	ae = amico.Evaluation(cwd,"NODDI")
-	ae.set_config('doDebiasSignal',True)
-        ae.set_config('DWI-SNR',30.)
-        amico.util.fsl2scheme("./NODDI/dwi.bvals",bvecs)
+	if debias is True:
+		ae.set_config('doDebiasSignal',True)
+        	ae.set_config('DWI-SNR',30.)
+        
+	amico.util.fsl2scheme("./NODDI/dwi.bvals",bvecs)
         ae.load_data(dwi_filename = "dwi.nii.gz", scheme_filename = "dwi.scheme", mask_filename = "nodif_brain_mask.nii.gz", b0_thr = 0)
 	ae.set_model("NODDI")
 	ae.model.dPar = dPar
