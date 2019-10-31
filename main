@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #PBS -l nodes=1:ppn=1,vmem=28gb,walltime=40:00:00
 #PBS -N NODDI_AMICO
 #PBS -V
@@ -44,6 +45,7 @@ singularity exec -e docker://brainlife/amico:1.1 ./round_b.py
 #rm -rf *col* *row*;
 cp -v nodif_brain_mask.nii.gz ./NODDI/;
 mv nodif_brain_mask.nii.gz mask.nii.gz;
+
 #cp -v bvals.scheme ./NODDI/;
 cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
@@ -67,6 +69,10 @@ for NODDIIMAGES in $noddiImages
 	do
 		mv ./NODDI/AMICO/NODDI/${NODDIIMAGES} ./
 	done
+mv FIT_ICVF_NEW.nii.gz icvf.nii.gz;
+mv FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
+mv FIT_OD_NEW.nii.gz od.nii.gz;
+mv FIT_dir.nii.gz dir.nii.gz;
 
 mv FIT_ICVF_NEW.nii.gz icvf.nii.gz;
 mv FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
