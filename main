@@ -51,7 +51,14 @@ cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
 dPar=`jq -r '.dPar' config.json`
-SINGULARITYENV_PYTHONNOUSERSITE=true singularity exec -e docker://brainlife/amico:1.1 ./NODDI.py
+
+
+#we could try increasing the thread counts, but people has suggested (https://github.com/daducci/AMICO/issues/56#issue-272930399
+#that increasing it doesn't speed up processing.. 
+export SINGULARITYENV_OMP_NUM_THREADS=1
+export SINGULARITYENV_MKL_NUM_THREADS=1
+export SINGULARITYENV_PYTHONNOUSERSITE=true 
+singularity exec -e docker://brainlife/amico:1.1 ./NODDI.py
 
 if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
 then
