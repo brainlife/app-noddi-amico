@@ -5,14 +5,19 @@ echo "Setting file paths"
 dwi=`jq -r '.dwi' config.json`;
 bvals=`jq -r '.bvals' config.json`;
 bvecs=`jq -r '.bvecs' config.json`;
-dtiinit=`jq -r '.dtiinit' config.json`;
-dtiinitDwi=$dtiinit/dwi_aligned_trilin_noMEC.nii.gz;
-dtiinitBvals=$dtiinit/dwi_aligned_trilin_noMEC.bvals;
+doadvance=`jq -r '.advancedMask' config.json`;
+otherMask=`jq -r '.mask' config.json`;
+if [ $otherMask != "null" ]; then
+	export otherMaskNifti=$otherMask
+fi
+noddiFile="NODDI";
+mkdir $noddiFile;
+
 echo "Files loaded"
 
 # Create b0
 select_dwi_vols \
-	dwi.nii.gz \
+	${dwi} \
 	${bvals} \
 	nodif.nii.gz \
 	0;
@@ -23,6 +28,10 @@ bet nodif.nii.gz \
 	-f 0.4 \
 	-g 0 \
 	-m;
+
+if [ $doadvance == true ]; then
+	fslmaths $otherMask -mul nodif_brain_mask.nii.gz nodif_brain_mask.nii.gz
+fi
 
 echo "brainmask creation complete"
 

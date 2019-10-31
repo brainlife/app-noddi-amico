@@ -1,47 +1,57 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=1,vmem=28gb,walltime=20:00:00
+
+#PBS -l nodes=1:ppn=1,vmem=28gb,walltime=40:00:00
 #PBS -N NODDI_AMICO
 #PBS -V
 
 module load singularity 2> /dev/null
 
-# alignment
-singularity exec -e docker://brainlife/fsl:5.0.9 ./alignment.sh
+dwi=`jq -r '.dwi' config.json`;
+otherMask=`jq -r '.mask' config.json`;
+advancedMask=`jq -r '.advancedMask' config.json`;
 
-# create brainmask
-singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
+if [ $otherMask == "null" ] && [ $advancedMask == false ]; then
+	# create brainmask
+	singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
+elif [ $otherMask != "null" ] && [ $advancedMask == true ]; then
+	singularity exec -e docker://brainlife/fsl:5.0.9 ./brainmask.sh
+elif [ $otherMask != "null" ] && [ $advancedMask == false ]; then
+	export otherMaskNifti=$otherMask;
+	cp -v $otherMaskNifti ./nodif_brain_mask.nii.gz;
+	mkdir NODDI;
+fi
 
-if [ ! -s nodif.nii.gz ];
+if [ ! -s nodif_brain_mask.nii.gz ];
 then
 	echo "output missing"
 	exit 1
 fi
 
-# rotate bvecs
-singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./rotation/rotateBvecs
+singularity exec -e docker://brainlife/amico:1.1 ./round_b.py
 
 # create scheme file
-num="1 2 3";
+#num="1 2 3";
 
-bvals=`jq -r '.bvals' config.json`;
-bvecs=`jq -r '.bvecs' config.json`;
+#bvals=dwi.bvals
+#bvecs=`jq -r '.bvecs' config.json`;
 
-for NUM in $num
-	do
-		sed -n "${NUM}p" ${bvecs} > row_${NUM}.txt
-		fmt -1 row_${NUM}.txt > col_${NUM}.txt
-		fmt -1 ${bvals} > col_bvals.txt
-	done
-pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
-rm -rf *col* *row*;
+#for NUM in $num
+#	do
+#		sed -n "${NUM}p" ${bvecs} > row_${NUM}.txt
+#		fmt -1 row_${NUM}.txt > col_${NUM}.txt
+#		fmt -1 ${bvals} > col_bvals.txt
+#	done
+#pr -m -t col_1.txt col_2.txt col_3.txt col_bvals.txt > bvals.scheme;
+#rm -rf *col* *row*;
 cp -v nodif_brain_mask.nii.gz ./NODDI/;
 mv nodif_brain_mask.nii.gz mask.nii.gz;
-cp -v bvals.scheme ./NODDI/;
-cp -v dwi.nii.gz ./NODDI/dwi.nii.gz;
+
+#cp -v bvals.scheme ./NODDI/;
+cp -v ${dwi} ./NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
 dPar=`jq -r '.dPar' config.json`
-singularity exec -e docker://brainlife/amico:1.0 ./NODDI.py
+SINGULARITYENV_PYTHONNOUSERSITE=true singularity exec -e docker://brainlife/amico:1.1 ./NODDI.py
 
 if [ ! -s ./NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ];
 then
@@ -59,6 +69,11 @@ for NODDIIMAGES in $noddiImages
 	do
 		mv ./NODDI/AMICO/NODDI/${NODDIIMAGES} ./
 	done
+mv FIT_ICVF_NEW.nii.gz icvf.nii.gz;
+mv FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
+mv FIT_OD_NEW.nii.gz od.nii.gz;
+mv FIT_dir.nii.gz dir.nii.gz;
+
 mv FIT_ICVF_NEW.nii.gz icvf.nii.gz;
 mv FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
 mv FIT_OD_NEW.nii.gz od.nii.gz;
