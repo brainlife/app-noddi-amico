@@ -10,8 +10,6 @@ otherMask=`jq -r '.mask' config.json`;
 if [ $otherMask != "null" ]; then
 	export otherMaskNifti=$otherMask
 fi
-noddiFile="NODDI";
-mkdir $noddiFile;
 
 echo "Files loaded"
 

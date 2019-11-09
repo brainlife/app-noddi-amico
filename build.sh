@@ -1,3 +1,3 @@
-tag=1.0
+tag=1.1
 docker build -t brainlife/amico:$tag . && docker push brainlife/amico:$tag
 

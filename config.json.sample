@@ -1,0 +1,9 @@
+{
+    "dwi": "testdata/dwi.nii.gz",
+    "bvecs": "testdata/dwi.bvecs",
+    "bvals": "testdata/dwi.bvals",
+    "mask": "testdata/mask.nii.gz",
+    "dPar": 0.0017,
+    "advancedMask": false,
+    "debias": false
+}
