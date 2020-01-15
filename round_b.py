@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 
-import json
+import sys
 
-config_file = open('config.json')
-config = json.load(config_file)
-bval_file = open(config['bvals'],"r")
+#round bvals to the nearest 50
 
-bvals = bval_file.readline().replace(",", " ").split()
-bval_file.close()
-
-def round_b(b):
-   return str(int(round(float(b)/100)*100))
-o = open("./NODDI/dwi.bvals", "w")
-o.write(" ".join(map(round_b, bvals)))
-o.close()
+with open(sys.argv[1]) as f:
+    lines=f.readlines()
+    line=lines[0].strip()
+    vals=line.split()
+    for v in vals:
+        i=int(50*round(float(v)/50))
+        sys.stdout.write(str(i))
+        sys.stdout.write(" ")
