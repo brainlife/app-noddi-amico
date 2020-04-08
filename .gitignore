@@ -1,2 +1,3 @@
 config.json
 testdata
+*.nii.gz
