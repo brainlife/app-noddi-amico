@@ -6,7 +6,7 @@ import sys
 import json
 
 #https://github.com/daducci/AMICO/issues/56
-nb_threads = 3
+nb_threads = 7
 os.environ["OMP_NUM_THREADS"] = str(nb_threads)
 os.environ["MKL_NUM_THREADS"] = str(nb_threads)
 print("using up to "+str(nb_threads)+" cores")
