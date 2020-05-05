@@ -39,6 +39,8 @@ ae.load_data(dwi_filename = "dwi.nii.gz",
 ae.set_model("NODDI") #this creates solver_params
 
 ae.model.dPar = dPar
+ae.model.IC_VFs = np.linspace(0.0,1,12)
+ae.model.IC_ODs = np.hstack((np.array([0.03, 0.06]),np.linspace(0.0,1,10)))
 ae.generate_kernels( regenerate = True )
 
 #https://github.com/daducci/AMICO/issues/67
