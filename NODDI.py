@@ -4,6 +4,7 @@
 import os
 import sys
 import json
+import numpy as np
 
 #https://github.com/daducci/AMICO/issues/56
 nb_threads = 7
