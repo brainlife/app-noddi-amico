@@ -14,7 +14,7 @@ print("using up to "+str(nb_threads)+" cores")
 
 #I need to load amico after I set OIM_NUM_THREADS
 import amico
-#amico.core.setup()
+amico.core.setup()
 
 with open('config.json') as config_json:
         config = json.load(config_json)
@@ -41,7 +41,6 @@ ae.set_model("NODDI") #this creates solver_params
 
 ae.model.dPar = dPar
 ae.model.IC_VFs = np.linspace(0.0,1,12)
-ae.model.IC_ODs = np.hstack((np.array([0.0,0.03,0.06]),np.linspace(0.09,1.00,11)))
 ae.generate_kernels()
 
 #https://github.com/daducci/AMICO/issues/67

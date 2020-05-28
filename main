@@ -9,6 +9,11 @@ module load singularity 2> /dev/null
 dwi=`jq -r '.dwi' config.json`;
 otherMask=`jq -r '.mask' config.json`;
 advancedMask=`jq -r '.advancedMask' config.json`;
+dPar=`jq -r '.dPar' config.json`
+
+[ -d ./NODDI ] && rm -rf NODDI kernels
+
+mkdir -p NODDI
 
 # create brainmask
 if [ $otherMask == "null" ] && [ $advancedMask == false ]; then
@@ -20,61 +25,34 @@ elif [ $otherMask != "null" ] && [ $advancedMask == false ]; then
 	cp -v $otherMaskNifti ./nodif_brain_mask.nii.gz;
 fi
 
-if [ ! -s nodif_brain_mask.nii.gz ];
-then
-	echo "output missing"
-	exit 1
-fi
-
-mkdir -p NODDI
-
-cp -v nodif_brain_mask.nii.gz NODDI/
-mv nodif_brain_mask.nii.gz mask.nii.gz
-
-singularity exec -e docker://python:3 ./round_b.py
-
-#cp -v bvals.scheme ./NODDI/;
-cp -v ${dwi} NODDI/dwi.nii.gz;
+# move files to appropriate directories
+[ ! -s nodif_brain_mask.nii.gz ] && echo "output missing" && exit 1
+[ ! -f NODDI/nodif_brain_mask.nii.gz ] && cp -v nodif_brain_mask.nii.gz NODDI/
+[ ! -f mask.nii.gz ] && mv nodif_brain_mask.nii.gz mask.nii.gz
+[ ! -f NODDI/dwi.bvals ] && singularity exec -e docker://python:3 ./round_b.py
+[ ! -f NODDI/dwi.nii.gz ] && cp -v ${dwi} NODDI/dwi.nii.gz;
 
 # NODDI via AMICO
 dPar=`jq -r '.dPar' config.json`
-
-#we could try increasing the thread counts, but people has suggested (https://github.com/daducci/AMICO/issues/56#issue-272930399
-#that increasing it doesn't speed up processing.. 
-#export SINGULARITYENV_OMP_NUM_THREADS=3
-#export SINGULARITYENV_MKL_NUM_THREADS=3
 export SINGULARITYENV_PYTHONNOUSERSITE=true 
 singularity exec -e docker://brainlife/amico:1.2 ./NODDI.py
 
-if [ ! -s NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ]; then
-	echo "output missing"
-	exit 1
-fi
-
-# registration
+# set appropriate header fields that AMICO neglects
 singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
 
-#noddiImages="FIT_ICVF_NEW.nii.gz FIT_ISOVF_NEW.nii.gz FIT_OD_NEW.nii.gz FIT_dir.nii.gz";
-#for NODDIIMAGES in $noddiImages; do
-#    mv ./NODDI/AMICO/NODDI/$NODDIIMAGES ./
-#done
 ##rename to brainlife noddi datatype filenames
-mv NODDI/AMICO/NODDI/FIT_ICVF_NEW.nii.gz icvf.nii.gz;
-mv NODDI/AMICO/NODDI/FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
-mv NODDI/AMICO/NODDI/FIT_OD_NEW.nii.gz od.nii.gz;
-mv NODDI/AMICO/NODDI/FIT_dir.nii.gz dir.nii.gz;
-
-if [ ! -s icvf.nii.gz ];
-then
-	echo "output missing"
-	exit 1
-fi
-
-echo "{\"tags\": [\"${dPar}\" ]}" > product.json
+[ ! -f icvf.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ICVF_NEW.nii.gz icvf.nii.gz;
+[ ! -f isovf.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
+[ ! -f od.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_OD_NEW.nii.gz od.nii.gz;
+[ ! -f dir.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_dir.nii.gz dir.nii.gz;
 
 #clean up
-rm -rf ./NODDI;
-rm -rf *nodif*;
-rm -rf ./kernels;
-
-echo "NODDI AMICO complete"
+if [ -f icvf.nii.gz ]; then
+	rm -rf ./NODDI *nodif* ./kernels;
+	echo "{\"tags\": [\"${dPar}\" ]}" > product.json
+	echo "NODDI AMICO complete"
+	exit 0
+else
+	echo "NODDI AMICO failed"
+	exit 1
+fi
