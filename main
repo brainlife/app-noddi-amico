@@ -44,7 +44,7 @@ dPar=`jq -r '.dPar' config.json`
 #export SINGULARITYENV_OMP_NUM_THREADS=3
 #export SINGULARITYENV_MKL_NUM_THREADS=3
 export SINGULARITYENV_PYTHONNOUSERSITE=true 
-singularity exec -e docker://brainlife/amico:1.1 ./NODDI.py
+singularity exec -e docker://brainlife/amico:1.2 ./NODDI.py
 
 if [ ! -s NODDI/AMICO/NODDI/FIT_ICVF.nii.gz ]; then
 	echo "output missing"
