@@ -41,13 +41,13 @@ singularity exec -e docker://brainlife/amico:1.2 ./NODDI.py
 singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
 
 ##rename to brainlife noddi datatype filenames
-[ ! -f icvf.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ICVF_NEW.nii.gz icvf.nii.gz;
+[ ! -f ndi.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ICVF_NEW.nii.gz ndi.nii.gz;
 [ ! -f isovf.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
-[ ! -f od.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_OD_NEW.nii.gz od.nii.gz;
+[ ! -f odi.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_OD_NEW.nii.gz odi.nii.gz;
 [ ! -f dir.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_dir.nii.gz dir.nii.gz;
 
 #clean up
-if [ -f icvf.nii.gz ]; then
+if [ -f ndi.nii.gz ]; then
 	rm -rf ./NODDI *nodif* ./kernels;
 	echo "{\"tags\": [\"${dPar}\" ]}" > product.json
 	echo "NODDI AMICO complete"
