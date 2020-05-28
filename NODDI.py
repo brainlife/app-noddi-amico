@@ -13,7 +13,7 @@ print("using up to "+str(nb_threads)+" cores")
 
 #I need to load amico after I set OIM_NUM_THREADS
 import amico
-#amico.core.setup()
+amico.core.setup()
 
 with open('config.json') as config_json:
         config = json.load(config_json)
