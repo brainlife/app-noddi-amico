@@ -4,6 +4,7 @@
 import os
 import sys
 import json
+import numpy as np
 
 #https://github.com/daducci/AMICO/issues/56
 nb_threads = 7
@@ -13,7 +14,7 @@ print("using up to "+str(nb_threads)+" cores")
 
 #I need to load amico after I set OIM_NUM_THREADS
 import amico
-#amico.core.setup()
+amico.core.setup()
 
 with open('config.json') as config_json:
         config = json.load(config_json)
@@ -39,6 +40,7 @@ ae.load_data(dwi_filename = "dwi.nii.gz",
 ae.set_model("NODDI") #this creates solver_params
 
 ae.model.dPar = dPar
+ae.model.IC_VFs = np.linspace(0.0,1,12)
 ae.generate_kernels( regenerate = True )
 
 #https://github.com/daducci/AMICO/issues/67

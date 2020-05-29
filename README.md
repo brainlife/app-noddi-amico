@@ -30,7 +30,11 @@ You can submit this App online at [https://doi.org/10.25663/bl.app.35](https://d
 {
         "dwi": "./input/dwi/dwi.nii.gz",
         "bvals": "./input/dwi/dwi.bvals",
-        "bvecs": "./input/dwi/dwi.bvecs"
+        "bvecs": "./input/dwi/dwi.bvecs",
+        "dPar": 0.017,
+        "advancedMask": false,
+        "debias":       false
+        "mask": "./input/brainmask/mask.nii.gz"
 }
 ```
 
@@ -55,7 +59,7 @@ bl dataset download 5b96bcd9059cf900271924f7 && mv 5b96bcd9059cf900271924f7 inpu
 
 ## Output
 
-The main output of this App are five NODDI output files: FIT_ICVF_NEW, FIT_OD_NEW, FIT_ISOVF_NEW, FIT_dir, and config.pickle. These can then be used in app-tractanalysisprofiles.
+The main output of this App are four NODDI output files: neurite density index (ndi), orientation dispersion index (odi), isotropic volume fraction (isovf), and the directions (dir). These can then be used in app-tractanalysisprofiles and other apps which take in a NODDI input.
 
 
 #### Product.json
