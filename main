@@ -35,7 +35,7 @@ fi
 # NODDI via AMICO
 dPar=`jq -r '.dPar' config.json`
 export SINGULARITYENV_PYTHONNOUSERSITE=true 
-singularity exec -e docker://brainlife/amico:1.2 ./NODDI.py
+singularity exec -e docker://brainlife/amico:2.1b ./NODDI.py
 
 # set appropriate header fields that AMICO neglects
 singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
