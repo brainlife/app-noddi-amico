@@ -1,1 +1,2 @@
 #need to address ODI binning still
+#can also port matlab code for making appropriate nifti header fields to python
