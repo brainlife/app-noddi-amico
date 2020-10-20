@@ -15,6 +15,15 @@ This app will fit the Neurite Orientation Dispersion and Density Imaging (NODDI;
 [![NSF-BCS-1734853](https://img.shields.io/badge/NSF_BCS-1734853-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1734853)
 [![NSF-BCS-1636893](https://img.shields.io/badge/NSF_BCS-1636893-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1636893)
 
+### Citations 
+
+Please cite the following articles when publishing papers that used data, code or other resources created by the brainlife.io community. 
+
+1. Daducci A, Canales-Rodríguez EJ, Zhang H, Dyrby TB, Alexander DC, Thiran JP. Accelerated Microstructure Imaging via Convex Optimization (AMICO) from diffusion MRI data. Neuroimage. 2015 Jan 15;105:32-44. doi: 10.1016/j.neuroimage.2014.10.026. Epub 2014 Oct 22. PMID: 25462697.
+
+1. Zhang H, Schneider T, Wheeler-Kingshott CA, Alexander DC. NODDI: practical in vivo neurite orientation dispersion and density imaging of the human brain. Neuroimage. 2012 Jul 16;61(4):1000-16. doi: 10.1016/j.neuroimage.2012.03.072. Epub 2012 Mar 30. PMID: 22484410.
+
+
 ## Running the App 
 
 ### On Brainlife.io
