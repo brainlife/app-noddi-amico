@@ -1,5 +1,5 @@
 [![Abcdspec-compliant](https://img.shields.io/badge/ABCD_Spec-v1.1-green.svg)](https://github.com/soichih/abcd-spec)
-[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.117-blue.svg)](https://doi.org/10.25663/bl.app.117)
+[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.365-blue.svg)](https://doi.org/10.25663/brainlife.app.365)
 
 # app-noddi-amico
 This app will fit the Neurite Orientation Dispersion and Density Imaging (NODDI; Zhang et al, 2012) model to multi-shell, normalized DWI data using the Accelerated Microstructure Imaging via Convex Optimization (AMICO; Daducci et al, 2015) toolbox. First, a brainmask of the aligned dwi will be made using FSL's bet function by running the brainmask script. Finally, the NODDI model will be fit using AMICO toolbox by running the NODDI script. 
@@ -28,7 +28,7 @@ Please cite the following articles when publishing papers that used data, code o
 
 ### On Brainlife.io
 
-You can submit this App online at [https://doi.org/10.25663/bl.app.35](https://doi.org/10.25663/bl.app.35) via the "Execute" tab.
+You can submit this App online at [https://doi.org/10.25663/brainlife.app.365](https://doi.org/10.25663/brainlife.app.365) via the "Execute" tab.
 
 ### Running Locally (on your machine)
 
