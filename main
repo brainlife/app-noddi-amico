@@ -13,7 +13,7 @@ dPar=`jq -r '.dPar' config.json`
 
 [ -d ./NODDI ] && rm -rf NODDI kernels
 
-mkdir -p NODDI
+mkdir -p NODDI noddi mask
 
 # create brainmask
 if [ $otherMask == "null" ] && [ $advancedMask == false ]; then
@@ -41,10 +41,11 @@ singularity exec -e docker://brainlife/amico:2.1b ./NODDI.py
 singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
 
 ##rename to brainlife noddi datatype filenames
-[ ! -f ndi.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ICVF_NEW.nii.gz ndi.nii.gz;
-[ ! -f isovf.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ISOVF_NEW.nii.gz isovf.nii.gz;
-[ ! -f odi.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_OD_NEW.nii.gz odi.nii.gz;
-[ ! -f dir.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_dir.nii.gz dir.nii.gz;
+[ ! -f ./noddi/ndi.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ICVF_NEW.nii.gz ./noddi/ndi.nii.gz;
+[ ! -f ./noddi/isovf.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_ISOVF_NEW.nii.gz ./noddi/isovf.nii.gz;
+[ ! -f ./noddi/odi.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_OD_NEW.nii.gz ./noddi/odi.nii.gz;
+[ ! -f ./noddi/dir.nii.gz ] && mv NODDI/AMICO/NODDI/FIT_dir.nii.gz ./noddi/dir.nii.gz;
+[ ! -f ./mask/mask.nii.gz ] && mv mask.nii.gz ./mask/mask.nii.gz;
 
 #clean up
 if [ -f ndi.nii.gz ]; then
