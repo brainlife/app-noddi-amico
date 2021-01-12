@@ -48,7 +48,7 @@ singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/mai
 [ ! -f ./mask/mask.nii.gz ] && mv mask.nii.gz ./mask/mask.nii.gz;
 
 #clean up
-if [ -f ndi.nii.gz ]; then
+if [ -f ./noddi/ndi.nii.gz ]; then
 	rm -rf ./NODDI *nodif* ./kernels;
 	echo "{\"tags\": [\"${dPar}\" ]}" > product.json
 	echo "NODDI AMICO complete"
