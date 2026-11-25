@@ -10,9 +10,9 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="MIT license"></a>
 </p>
 
-> ⚠️ **This branch, `original_code`, is the deprecated brainlife.io App Fit NODDI model using AMICO (dtiinit) -  DEPRECATED** ([doi:10.25663/bl.app.35](https://doi.org/10.25663/bl.app.35)). It is kept so earlier results stay reproducible. Use **Noddi Amico - Deprecated** ([doi:10.25663/brainlife.app.117](https://doi.org/10.25663/brainlife.app.117)) instead. The other Apps in this repository are listed under **Versions on brainlife.io** below.
+> **This branch, `original_code`, is the deprecated brainlife.io App Fit NODDI model using AMICO (dtiinit) -  DEPRECATED** ([doi:10.25663/bl.app.35](https://doi.org/10.25663/bl.app.35)). It is kept so earlier results stay reproducible. Use **Noddi Amico - Deprecated** ([doi:10.25663/brainlife.app.117](https://doi.org/10.25663/brainlife.app.117)) instead. The other Apps in this repository are listed under **Versions on brainlife.io** below.
 
-## 🧠 At a glance
+## At a glance
 
 <!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
 
@@ -22,20 +22,20 @@ This app will fit the Neurite Orientation Dispersion and Density Imaging (NODDI;
 
 | | |
 |---|---|
-| 📥 **Inputs** | `neuro/dwi` · `neuro/dtiinit` |
-| 📤 **Outputs** | `neuro/noddi-deprecated` · `neuro/mask` |
-| 🐳 **Container** | `brainlife/fsl:5.0.9` |
-| ⚙️ **Resources** | 1 CPUs · 28 GB memory · 20 h walltime |
-| 🔗 **Run it** | [doi.org/10.25663/bl.app.35](https://doi.org/10.25663/bl.app.35) |
+| **Inputs** | `neuro/dwi` · `neuro/dtiinit` |
+| **Outputs** | `neuro/noddi-deprecated` · `neuro/mask` |
+| **Container** | `brainlife/fsl:5.0.9` |
+| **Resources** | 1 CPUs · 28 GB memory · 20 h walltime |
+| **Run it** | [doi.org/10.25663/bl.app.35](https://doi.org/10.25663/bl.app.35) |
 
-#### 📥 Inputs
+#### Inputs
 
 | Input | Datatype | Required | Description |
 |---|---|---|---|
 | `0` | `neuro/dwi` (!single_shell) | yes | The path to the DWI datatype |
 | `1` | `neuro/dtiinit` | yes | The path to the top directory containing the output from DTIINIT |
 
-#### 📤 Outputs
+#### Outputs
 
 | Output | Datatype | Description |
 |---|---|---|
@@ -43,7 +43,7 @@ This app will fit the Neurite Orientation Dispersion and Density Imaging (NODDI;
 | `1` | `neuro/mask` | The brainmask of the DWI image |
 
 <details>
-<summary><b>⚙️ Parameters</b> (1)</summary>
+<summary><b>Parameters</b> (1)</summary>
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -53,7 +53,7 @@ This app will fit the Neurite Orientation Dispersion and Density Imaging (NODDI;
 
 <!-- brainlife-app:end -->
 
-## 🏷️ Versions on brainlife.io
+## Versions on brainlife.io
 
 Each version is a separate App on brainlife.io, built from its own branch of this repository. The two current Apps run the same pipeline; pick the one that matches your data.
 
@@ -68,15 +68,15 @@ Each version is a separate App on brainlife.io, built from its own branch of thi
 
 NODDI needs multi-shell data to estimate neurite density and isotropic volume fraction. With single-shell data only the orientation dispersion index (ODI) can be fitted reliably; do not trust NDI and ISOVF from the single-shell App.
 
-## 🚀 Running the App
+## Running the App
 
-### ☁️ On brainlife.io
+### On brainlife.io
 
 Open the App at [doi.org/10.25663/brainlife.app.366](https://doi.org/10.25663/brainlife.app.366) for single-shell data or [doi.org/10.25663/brainlife.app.365](https://doi.org/10.25663/brainlife.app.365) for multi-shell data. Choose a preprocessed DWI dataset (and, optionally, a brain mask in DWI space), set the parallel diffusivity `dPar` and press **Execute**. Use `dPar` 0.0017 for white matter analyses and 0.0011 for cortical mapping. The NODDI maps (`neuro/noddi`) and the brain mask used for the fit (`neuro/mask`) are archived to your project and can feed tract-profile and ROI Apps that take a NODDI input.
 
 The App builds a brain mask from the b=0 volumes with FSL `bet` (unless you provide one), rounds the b-values, fits NODDI with AMICO (optionally debiasing the signal first), and then sets NIfTI header fields that AMICO leaves out.
 
-### 💻 Locally
+### Locally
 
 You need [Singularity/Apptainer](https://apptainer.org/) and [`jq`](https://jqlang.github.io/jq/). FSL, AMICO, Python and the MATLAB runtime come from the containers that `main` pulls.
 
@@ -101,7 +101,7 @@ You need [Singularity/Apptainer](https://apptainer.org/) and [`jq`](https://jqla
    ./main
    ```
 
-### 🧪 Sample data
+### Sample data
 
 Download a sample DWI dataset from brainlife.io with the [brainlife CLI](https://github.com/brainlife/cli):
 
@@ -112,7 +112,7 @@ mkdir input
 bl dataset download 5b96bcd9059cf900271924f7 && mv 5b96bcd9059cf900271924f7 input/dwi
 ```
 
-## 📦 Outputs
+## Outputs
 
 ```text
 noddi/
@@ -125,13 +125,13 @@ mask/
 product.json       records the dPar value as a datatype tag
 ```
 
-## 🩺 Troubleshooting
+## Troubleshooting
 
 - **`output missing`**: no brain mask was produced or provided. Provide a DWI-space brain mask, or check the FSL `bet` step in the log.
 - **`NODDI AMICO failed`**: the AMICO fit did not produce the NDI map. Check the log of `NODDI.py`; the multi-shell App needs multi-shell DWI.
 - **The provided mask still contains non-brain tissue**: set `advancedMask` to `true`. The App then multiplies your mask by an FSL `bet` mask of the b=0 image.
 
-## 📚 Citing
+## Citing
 
 > [!TIP]
 > If you use this App in your work, please cite the App, the software it builds on and brainlife.io (below). GitHub's **Cite this repository** button gives the App citation in APA and BibTeX.
@@ -143,13 +143,13 @@ product.json       records the dPar value as a datatype tag
 - Hayashi S, Caron BA, Heinsfeld AS, et al. brainlife.io: a decentralized and open-source cloud platform to support neuroscience research. *Nature Methods* 21:809–813 (2024). [doi:10.1038/s41592-024-02237-2](https://doi.org/10.1038/s41592-024-02237-2)
 - Avesani P, McPherson B, Hayashi S, et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. *Scientific Data* 6:69 (2019). [doi:10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
 
-## 👥 Authors
+## Authors
 
 - Brad Caron
 
 **Contributors:** Soichi Hayashi, Franco Pestilli
 
-## 💰 Funding
+## Funding
 
 [![Wellcome-226486/Z/22/Z](https://img.shields.io/badge/Wellcome-226486%2FZ%2F22%2FZ-purple.svg)](https://wellcome.org/)
 [![NIH-NINDS-U24NS140384](https://img.shields.io/badge/NIH_NINDS-U24NS140384-green.svg)](https://reporter.nih.gov/project-details/11261037)
@@ -168,6 +168,6 @@ product.json       records the dPar value as a datatype tag
 
 <sub>brainlife.io is publicly funded, and acknowledging that support helps keep it running. This App was developed with support from Wellcome, the U.S. National Institutes of Health (including the BRAIN Initiative BRAIN CONNECTS program: The Axonal Projectome EXchange, U24NS140384, and the Center for Mesoscale Connectomics, UM1NS132207) and the U.S. National Science Foundation.</sub>
 
-## ⚖️ License
+## License
 
 [MIT](LICENSE). AMICO and FSL are distributed under their own licenses.
